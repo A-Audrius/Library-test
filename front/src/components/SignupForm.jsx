@@ -8,6 +8,11 @@ import { Link } from "react-router";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const SignupForm = () => {
+  // const [ values, setValues ] = useState({
+  //   username: "",
+  //   email: "",
+  //   password: ""
+  // });
   const { setUser, error, setError } = useContext(UserContext);
   const navigate = useNavigate();
   const {
@@ -17,7 +22,8 @@ const SignupForm = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (formdata) => {
+  const onSubmit = async (formdata, e) => {
+    e.preventDefault();
     try {
       const { data: response } = await axios.post(
         `${API_URL}/users/signup`,
@@ -58,6 +64,7 @@ const SignupForm = () => {
           </label>
           <input
             type="text"
+            // onChange={e => setValues({...values, username: e.target.value})}
             {...register("username", {
               required: "Can't be empty",
             })}
@@ -70,6 +77,7 @@ const SignupForm = () => {
           <label className="block text-sm font-medium text-white">Email</label>
           <input
             type="email"
+            // onChange={e => setValues({...values, email: e.target.value})}
             {...register("email", {
               required: "Can't be empty",
               pattern: {
@@ -89,6 +97,7 @@ const SignupForm = () => {
           </label>
           <input
             type="password"
+            // onChange={e => setValues({...values, password: e.target.value})}
             {...register("password", {
               required: "Can't be empty",
               // pattern: {
