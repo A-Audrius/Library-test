@@ -35,6 +35,7 @@ const sendCookie = (token, res) => {
 
 exports.signToken = signToken;
 exports.sendCookie = sendCookie;
+
 exports.signup = async (req, res, next) => {
   try {
     const newUser = req.body;

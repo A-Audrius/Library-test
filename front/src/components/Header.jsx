@@ -1,10 +1,9 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import Profile from "../assets/profile.jpg";
 import UserContext from "../contexts/UserContext";
 import ThemeButton from "./ThemeButton";
-import { Link } from "react-router";
 
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -20,25 +19,28 @@ function Header() {
   // Vartotojo vardas, kuris bus rodomas po prisijungimo
   const [username, setUsername] = useState('');
 
-  const handleLogin = () => {
-    // Čia galite įdėti tikrą autentifikacijos logiką
-    // Šiame pavyzdyje tiesiog pakeičiame būseną
-    setUser(user);
+
+  const handleLogin = async () => {
+    setUsername('vardas');
     setIsLoggedIn(true);
+    navigate("/login");
   };
 
   // Funkcija, kuri bus iškviečiama paspaudus atsijungimo mygtuką
-  const handleLogout = () => {
-    setUser('');
-    setIsLoggedIn(false);
-  };
+  // const handleLogout = () => {
+  //   setUsername('');
+  //   setIsLoggedIn(false);
+  // };
 
   const logout = async () => {
+    setUsername('');
+    setIsLoggedIn(false);
+
     try {
       await axios.get(`${API_URL}/users/logout`, { withCredentials: true });
 
       setUser(null);
-      navigate("/books");
+      navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -91,60 +93,57 @@ function Header() {
 
         {/* Sąlyginis atvaizdavimas, priklausomai nuo prisijungimo būsenos */}
         {isLoggedIn ? (
-          // <div className="flex items-center space-x-3">
-          //   <span className="text-gray-700">Sveiki, {user}</span>
-          //   <button 
-          //     onClick={handleLogout}
-          //     className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors"
-          //   >
-          //     Atsijungti
-          //   </button>
-          // </div>
-
-          user && (
-            <div className="relative" onBlur={() => setIsDropdownOpen(false)}>
-              <div
-                className=" cursor-pointer mt-3"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                <img
-                  src={Profile}
-                  alt="Profile"
-                  className="rounded-full w-10 h-10 mr-10  my-2 border"
-                />
-              </div>
-
-              {isDropdownOpen && (
-                <div className="absolute right-0 top-full lg:left-12 lg:top-0 mt-2 w-32 bg-white shadow-lg rounded-lg overflow-hidden">
-                  <button
-                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-200"
-                    onClick={logout}
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          )
-        ) : (
           <button
             onClick={handleLogin}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+            className="bg-blue-300 hover:bg-blue-500 h-10 my-auto text-white px-4  rounded-md transition-colors"
           >
             Prisijungti
           </button>
+        ) : (
+          <div className="flex items-center space-x-4 mr-5">
+
+            <span className="text-gray-700">Sveiki, {username}</span>
+            <img
+              src={Profile}
+              alt="Profile"
+              className="rounded-full w-10 h-10 mr-10  my-2 border"
+            />
+
+            <button
+              onClick={logout}
+              className="bg-red-300 hover:bg-red-500 text-white px-4 py-2 rounded-md transition-colors"
+            >   {user && (
+              <div className="relative" onBlur={() => setIsDropdownOpen(false)}>
+                <div
+                  className=" cursor-pointer mt-3"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  <img
+                    src={Profile}
+                    alt="Profile"
+                    className="rounded-full w-10 h-10 mr-10  my-2 border"
+                  />
+                </div>
+    
+                {isDropdownOpen && (
+                  <div className="absolute right-0 top-full lg:left-12 lg:top-0 mt-2 w-32 bg-white shadow-lg rounded-lg overflow-hidden">
+                    <button
+                      className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-200"
+                      onClick={logout}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+    
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+              Atsijungti
+            </button>
+          </div>
         )}
 
-
-
-        {/* <div className=" flex items-center gap-2 mr-5">
-          <Link to="/login" className="btn btn-ghost bg-transparent">
-            Login
-          </Link>
-          <Link to="/signup" className="btn btn-ghost bg-transparent">
-            Signup
-          </Link>
-        </div> */}
 
 
         {/* {user && (
@@ -171,9 +170,9 @@ function Header() {
               </div>
             )}
           </div>
-        )} */}
+        )}
 
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>} */}
 
       </section>
 
