@@ -4,6 +4,7 @@ import axios from "axios";
 import Profile from "../assets/profile.jpg";
 import UserContext from "../contexts/UserContext";
 import ThemeButton from "./ThemeButton";
+import logo from "../assets/Library.png";
 
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -64,6 +65,8 @@ function Header() {
   return (
     <>
       <section className="w-3/4 mx-auto mb-10 h-16  bg-indigo-200 dark:bg-blue-950 dark:text-white flex  rounded-br-2xl rounded-bl-2xl justify-between">
+
+        <img src={logo} alt="Library" className="w-16 mx-4 my-2" />
 
         <div className="flex ml-5 ">
           <ThemeButton />
